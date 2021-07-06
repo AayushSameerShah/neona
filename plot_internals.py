@@ -1,16 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def get_lw():
-    a= np.arange(15, -1, -4); gap = len(a)
-    b= np.arange(0, 1, (1/gap)-.1)
+def get_lw(lw=15):
+    a = np.arange(lw, 0, -4); gap = len(a)
+    b = np.linspace(0, .3, gap)
     return a, b
 
-def plot_configure(spines_yn= True, figsize= None):
-    fig, ax = plt.subplots(figsize= figsize)
+def plot_configure(ax, spines_yn= True):
     for spine in ['left', 'right', 'top', 'bottom']:
         ax.spines[spine].set_visible(spines_yn)
-    return fig, ax
 
 def get_point(fig, point_size):
     fig_width_x_height = fig.get_figwidth() * fig.get_figheight()

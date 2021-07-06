@@ -1,10 +1,13 @@
+# Libs
+import importlib
 import pandas as pd
 import matplotlib.pyplot as plt
-import importlib
+from scipy.stats import gaussian_kde
+# Plot-Mods
 import plot_internals
-importlib.reload(plot_internals)
 from plot_internals import *
 
+importlib.reload(plot_internals)
 colors = ["#59ffc5", "#ffed4f", "#19ffaf", "#00eaff", "#ffed4f", "#f67dff", "#ff59db", "#ff59db", "#fffba6", "cyan"]
 
 def barplot(x, y, spines= True, figsize= None, point_size= 2, color= "#59ffc5",
@@ -102,5 +105,44 @@ def lineplot(x, y= None, spines= True, figsize= None, point_size= 2,
                 for size, alpha in zip(sizes, alphas):
                     plt.scatter(ind, val, s= size, alpha= alpha, color= color, marker= point_marker)
                 plt.scatter(ind, val, s= 10, alpha= 1, color= color, marker= point_marker)
+    
+    return ax
+
+# ------------------------------------- ANOTHER ----------------------------------------------------------------
+
+def kdeplot(x, covariance_factor=.5, fill_alpha=.15, fill=True, spines=True,
+             color="#59ffc5", lw=15, ax=None):
+    
+    ax = ax or plt.gca()
+    plot_configure(ax, spines_yn=spines)
+    a, b = get_lw(lw=lw)
+    
+    def plot_it(x, color=color):
+        density = gaussian_kde(x)
+        x_min = min(x)
+        x_max = max(x)
+        xs = np.linspace(x_min - int(x_max * .5), x_max + int(x_max * .5), 2000)
+        density.covariance_factor = lambda : covariance_factor
+        density._compute_covariance()
+        
+        for width, alpha in zip(a, b):
+            plt.plot(xs, density(xs), color=color, alpha= alpha, lw= width)
+        plt.plot(xs, density(xs), color=color)
+        
+        if fill:
+            ylim = plt.ylim()
+            plt.fill_between(xs, density(xs), color=color, alpha=fill_alpha)
+            plt.ylim(ylim)
+    
+    
+    # Checking if X is from list, array, series or tuple (in short not df)
+    if not isinstance(x, (pd.DataFrame)):
+        plot_it(x)
+        
+    # Means DF is passed
+    else:
+        columns = [*x.columns]
+        for colorId, col in enumerate(columns):
+            plot_it(x[col], colors[colorId])
     
     return ax
