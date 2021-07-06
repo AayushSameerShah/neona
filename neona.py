@@ -146,3 +146,32 @@ def kdeplot(x, covariance_factor=.5, fill_alpha=.15, fill=True, spines=True,
             plot_it(x[col], colors[colorId])
     
     return ax
+
+# ------------------------------------ ANOTHER ------------------------------------------
+
+def scatterplot(x, y, spines=True, point_size=2,
+                 color="#59ffc5", point_marker='o', font_dict=dict(),
+                 font_offset_xy=(0, 0), show_values=None, ax=None):
+    
+    fig = plt.gcf()
+    ax = ax or plt.gca()
+    font_dict['color'] = color
+    plot_configure(ax, spines_yn=spines)
+    size, alpha, point = get_point(fig, point_size=point_size)
+    
+    for size, alpha in zip(size, alpha):
+        plt.scatter(x, y, s=size, alpha=alpha, color=color, marker=point_marker)
+    plt.scatter(x, y, s=point, color=color, marker=point_marker)
+    
+    if show_values:
+        if show_values == True:
+            for x, y in zip(x, y):
+                plt.text(x, y, str(y), **font_dict)
+        else:
+            values = list(iter(show_values))
+            if len(values) == len(x):
+                for x, y, value in zip(x, y, values):
+                    plt.text(x, y, str(value), **font_dict)
+            else: raise NotImplementedError("The length is not matching")
+            
+    return ax
