@@ -5,6 +5,8 @@ import plot_internals
 importlib.reload(plot_internals)
 from plot_internals import *
 
+colors = ["#59ffc5", "#ffed4f", "#19ffaf", "#00eaff", "#ffed4f", "#f67dff", "#ff59db", "#ff59db", "#fffba6", "cyan"]
+
 def barplot(x, y, spines= True, figsize= None, point_size= 2, color= "#59ffc5",
             point_marker= 'o', font_dict= dict(), font_offset_xy= (0, 0),
             show_values= True):
