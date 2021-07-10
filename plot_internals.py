@@ -21,3 +21,6 @@ def get_point(fig, point_size):
     size = np.arange(patch_size, 0, -decrease); gap = len(size)
     alpha = np.linspace(.05, .5, gap) ** 3
     return size, alpha, point
+
+def cycle_colors(color):
+    return cycle([color]) if isinstance(color, str) else cycle(color)
