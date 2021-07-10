@@ -3,6 +3,7 @@ import importlib
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
+
 # Plot-Mods
 import plot_internals
 from plot_internals import *
@@ -11,9 +12,85 @@ importlib.reload(plot_internals)
 colors = ["#59ffc5", "#ffed4f", "#19ffaf", "#00eaff", "#ffed4f", "#f67dff", "#ff59db", "#ff59db", "#fffba6", "cyan"]
 plt.style.use('dark_background')
 
-def barplot(x, y, spines=True, color="#59ffc5", font_dict=dict(),
-             show_values=False, ax=None, lw=25, y_offset=0):
+def barplot(x, y, show_values=False, spines=True, color="#59ffc5", lw=25, font_dict=dict(),
+            y_offset=0, ax=None):
     
+    """
+    NEONA
+    —————
+
+     _______________________________________________________    
+    |This function plots a neon barplot. A column structure.|
+     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    
+    About
+    -----
+    This function is the neon sibling of `plt.bar`. Here it will plot
+    each category of your value with the respective height. 
+
+    Try to utilize the `show_values` feature of this function for easy
+    overview of the data.
+
+
+    Parameters
+    ----------
+    x: Any 1D iterable — A base on which the bars will be plotted.
+       It will be your x-axis.
+
+    y: Any 1D iterable — The `height` of all individual bars. It 
+        must be numerical.
+
+    show_values: True / False — To toggle the numerical visibility
+        of the values of `y`.
+
+    spines: True / False — To toggle visibility of axes spines. As
+        neona looks better with dark black and withot any borders!
+
+    color: hex / str — value for color (only single color
+         - multiple colors will be added soon)
+
+    lw: int / float — it is `linewidth` to control the intensity 
+        and thickness of the edge.
+
+    font_dict: dict() — Any acceptable arguement for fonts in 
+        matplotlib can be passed here. (Font colors are not
+        supported now.)
+
+    y_offset: int / flot  — Will set an offset for the `values`.
+        If show_values is True.
+       
+    ax: plt.axes object.
+
+    Example
+    -------
+    >>> ser = pd.Series(np.random.randint(0, 100, 5), index=list('abcde'))
+    
+    a    41
+    b    37
+    c    18
+    d    49
+    e    58
+    dtype: int32
+
+    >>> neona.barplot(ser.index, ser)
+
+    Also see
+    --------
+    neona.lollipoplot()
+
+
+    Future updates
+    --------------
+    • I am trying to provide more facilities. And currently working on vertical and
+    horizontal layout for bar plot. Which can be accessed directly from here. 
+
+    • Other thing is to add more color flexibilities for the fonts and the individual
+    bars. But looking at the colors - there are a few / very few colors that can suite
+    well with neon light. But still is under development.
+
+    --- END ---
+
+    """
     
     fig = plt.gcf()
     ax = ax or plt.gca()
@@ -35,9 +112,97 @@ def barplot(x, y, spines=True, color="#59ffc5", font_dict=dict(),
 # -------------------------------------- ANOTHER -------------------------------------------
 
 
-def lollipoplot(x, y, spines= True, point_size= 2, color= "#59ffc5",
-            point_marker= 'o', font_dict= dict(),
-            show_values= True, ax=None, lw=15):
+def lollipoplot(x, y, show_values=True, point_marker='o', point_size=2, 
+                color="#59ffc5", spines=True, font_dict=dict(), ax=None, lw=15):
+
+    """
+    NEONA
+    —————
+
+     ___________________________________________________________    
+    |This function plots a neon lollipop plot. A line structure.|
+     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    
+    About
+    -----
+    This function will make you "wow". It is similar to the routine
+    barplot, but the main difference is — this provides the functionality
+    to choose the `point_marker` type and their respective sizes.
+
+    This will plot a single vertical line for each category of your data
+    and till the height provided in `y`.
+
+    Another advantage is that — you can pass multiple colors for each individual
+    lollipops and your plot will shine.
+    
+
+    Parameters
+    ----------
+    x: Any 1D iterable — A base on which the bars will be plotted.
+       It will be your x-axis.
+
+    y: Any 1D iterable — The `height` of all individual lollipop. It 
+        must be numerical.
+
+    show_values: True / False — To toggle the numerical visibility
+        of the values of `y`.
+
+    point_marker: Any acceptable format of markers in `plt.scatter`.
+        Such as — 'o', 'x', 's'... Default is 'o'. This will change
+        the look of the lollipop head.
+
+    point_size: int / float — This will change the head size of the
+        lollipop. 
+
+    spines: True / False — To toggle visibility of axes spines. As
+        neona looks better with dark black and withot any borders!
+
+    color: hex / str / 1D iterable — value to provide color(s) to
+        the lollipops. Single (color='r') or multiple (color=['r', 'purple'])
+        will work. Works even when the colors are less than the total bars.
+
+    lw: int / float — it is `linewidth` to control the intensity 
+        and thickness of the edge of each lollipop.
+
+    font_dict: dict() — Any acceptable arguement for fonts in 
+        matplotlib can be passed here. (Font colors are not
+        supported now.)
+       
+    ax: plt.axes object.
+    
+    
+    Example
+    -------
+    >>> ser = pd.Series(np.random.randint(0, 100, 5), index=list('abcde'))
+    
+    a    41
+    b    37
+    c    18
+    d    49
+    e    58
+    dtype: int32
+
+        # With single color
+    >>> neona.lollipoplot(ser.index, ser, color='r')
+
+        # With multiple colors (even if their length is not same as data)
+    >>> neona.lollipoplot(ser.index, ser, color=['r', 'cyan'])
+
+        # With multiple colors built in neona
+    >>> neona.lollipoplot(ser.index, ser, color=neona.neos1)
+
+    Also see
+    --------
+    neona.barplot()
+
+
+    Future updates
+    --------------
+    • I am trying to provide more facilities. And currently working on vertical and
+    horizontal layout for lollipop plot. Which can be accessed directly from here. 
+
+    --- END ---
+    """
     
     fig = plt.gcf()
     ax = ax or plt.gca()
@@ -67,10 +232,120 @@ def lollipoplot(x, y, spines= True, point_size= 2, color= "#59ffc5",
 
 # ----------------------------------------------- ANOTHER ------------------------------------------------------
 
-def lineplot(x, y= None, spines= True, figsize= None, point_size= 2,
-             color= "#59ffc5", point_marker= 'o', font_dict= dict(),
-             show_values= True, show_marks= True, ax=None, lw=15, legend=False, legend_label=None):
+def lineplot(x, y= None, show_marks= True, point_marker= 'o', point_size= 2, show_values= True,
+            color= "#59ffc5", lw=15, spines= True, font_dict= dict(), ax=None, 
+            legend=False, legend_label=None):
     
+    """
+    NEONA
+    —————
+
+     ____________________________________
+    |This function plots a neon Line plot|
+     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    
+    About
+    -----
+    This function is when the neona really shines. (Actully shines)
+    It is the sibling of `plt.plot`. Well, with plt.plot many kinds
+    of plots like - connected, not connected, scatter etc. are possible
+    but I have made this `neona.lineplot` with just the line structure
+    (connected dots) in mind.
+
+    So when you have the data which shows some progress or something else
+    in which the value changes, you must use this.
+
+    Good things
+    -----------
+    This function can accept `DataFrame` object directly and will apply the
+    individual colors automatically to each column, each fonts and each points.
+
+    Others like list, series and array can be passed to individually passed to as well.
+    
+
+    Parameters
+    ----------
+    x: DataFrame / List / Array / Series.
+        If just DataFrame is passed then there is no need to pass `y`.
+        This will automatically take index as x-axis and values of each
+        column will be plotted with different colors as y-axis.
+        (if multiple colors passed)
+
+        If List / Array / Series passed and `y` is not passed. Then
+        their index will be taken as x-axis and values as y-axis.
+
+        If `x` and `y` are both passed. Then they both must be List /
+        Array / Series. In that case - x's values will be on x-axis and
+        y's values on the y-axis.
+
+        You can't pass DF with Array / Series / List.
+
+
+    y: [optional] Any 1D iterable — The `height` of all individual lollipop. It 
+        must be numerical.
+
+    show_marks: True / False — This will toggle the point intersection marks'
+        visibility.
+    
+    point_marker: Any acceptable format of markers in `plt.plot`.
+        Such as — 'o', 'x', 's'... Default is 'o'. This will change
+        the look of the points' intersection head. (only if show_marks= True)
+    
+    point_size: int / float — This will change the head size of the
+        points' intersection. (only if show_marks= True)
+
+    show_values: True / False — To toggle the numerical visibility
+        of the values of `y`.
+
+    color: hex / str / 1D iterable — value to provide color(s) to the
+        lines. Single (color='r') or multiple (color=['r', 'purple'])
+        will work. Multiple colors will only makes sense if you are passing
+        DataFrame as `x`. Only first color in that list will be used.
+
+    lw: int / float — it is `linewidth` to control the intensity 
+        and thickness of the edge of each lollipop.
+        
+    spines: True / False — To toggle visibility of axes spines. As
+        neona looks better with dark black and withot any borders!
+
+    font_dict: dict() — Any acceptable arguement for fonts in 
+        matplotlib can be passed here. (Font colors are not
+        supported now.)
+    
+    legend: True / False — Will show or hide legends. If the DataFrame is passed
+        then the `legend_label` parameter will be not effective. It will automatically
+        give the column names of that DataFrame in `x` to the legend. 
+
+    legend_label: str — This will be used if the legend = True and the `x` is not DataFrame.
+        The values passed in here will act asif you are passing `label` parameter in plt.plot(label="Value")
+        and then calling plt.legend()
+
+    ax: plt.axes object.
+    
+    
+    Example
+    -------
+    >>> df = pd.DataFrame(np.random.randint(0, 100, (5,3)))
+    
+        0   1   2
+    0  54  90  98
+    1  30  23   6
+    2  42  83  49
+    3   6  21  73
+    4   3  16   7
+
+        # Passing DF
+    >>> neona.lineplot(df, color=neona.neos1)
+
+        # Passing Series ↓ (also series, right?)
+    >>> neona.lineplot(df[0])
+
+        # Passing both x and y
+    >>> neona.lineplot(df[0], df[1])
+
+    --- END ---
+    """
+
     fig = plt.gcf()
     ax = ax or plt.gca()
     plot_configure(ax, spines_yn=spines)
