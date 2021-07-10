@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from itertools import cycle
 import numpy as np
 
 def get_lw(lw=15):

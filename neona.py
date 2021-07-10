@@ -11,8 +11,31 @@ importlib.reload(plot_internals)
 colors = ["#59ffc5", "#ffed4f", "#19ffaf", "#00eaff", "#ffed4f", "#f67dff", "#ff59db", "#ff59db", "#fffba6", "cyan"]
 plt.style.use('dark_background')
 
+def barplot(x, y, spines=True, color="#59ffc5", font_dict=dict(),
+             show_values=False, ax=None, lw=25, y_offset=0):
+    
+    
+    fig = plt.gcf()
+    ax = ax or plt.gca()
+    plot_configure(ax, spines_yn=spines)
+    a, b = get_lw(lw)
+    
+    for width, alpha in zip(a, b):
+        plt.bar(x, y, edgecolor=color, facecolor= (0, 0, 0, 0), linewidth=width, 
+                 alpha=alpha)
+    plt.bar(x, y, edgecolor=color, facecolor= (0, 0, 0, 0));
+    
+    if show_values == True:
+        font_dict['color'] = color
+        for x, y in zip(x, y):
+            plt.text(x, y - y_offset, str(int(y)), **font_dict)    
+        
+    return ax
 
-def barplot(x, y, spines= True, point_size= 2, color= "#59ffc5",
+# -------------------------------------- ANOTHER -------------------------------------------
+
+
+def lollipoplot(x, y, spines= True, point_size= 2, color= "#59ffc5",
             point_marker= 'o', font_dict= dict(),
             show_values= True, ax=None, lw=15):
     
