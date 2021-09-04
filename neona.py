@@ -714,9 +714,86 @@ def scatterplot(x, y, point_marker='o', point_size=2, spines=True,
 
 # ------------------------------------- ANOTHER ---------------------------------------
 
-def histplot(x, spines=True, color="#59ffc5", font_dict=dict(),
-             show_values=False, ax=None, bins=None, lw=25, text_offset_xy=(0, 1)):
+def histplot(x, bins=None, lw=25, color="#59ffc5", spines=True, 
+             show_values=False, font_dict=dict(), text_offset_xy=(0, 1), ax=None):
+    """
+    NEONA
+    —————
+
+     _______________________________________________________
+    |This let's you see the distribution "hisotgramatically"|
+     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
     
+    About
+    -----
+    Anytime when either you want to get "feel" of the feature,
+    or want to spot an outlier or just having good time with
+    the distribution of the data, neo-hist is here for you.
+
+    The built-in functionality to show the value and glowing
+    edges will make your presentation amazing. 
+
+
+    Good Things
+    -----------
+    Here, you can also tweak the position of the values to be 
+    shown on the bars by accessing `text_offset_xy` parameter. 
+    
+
+    Parameters
+    ----------
+    x: List / Array / Series.
+        This is a data source for the X axis on the histplot. It should be any
+        1D iterable. Currently pd.DataFrame object is not supported.
+
+    bins: int — Lets you control the binsize of the bar in historgram. Internally
+        accesses the plt.hist(bins=int).
+
+
+    lw: int / float — it is `linewidth` to control the intensity 
+        and thickness of the edge of each column.
+    
+    
+    color: hex / str — value to provide color to the edges. All
+        supported colors by matplotlib will work.
+
+        Consider giving only single color here. Unlike the barplot,
+        we are only displaying the value distribution of the single
+        plot. So the different colors won't make any sense. Unless
+        you want to plot on top of each other.
+
+
+    spines: True / False — To toggle visibility of axes spines. As
+        neona looks better with dark black and withot any borders!
+
+
+    show_values: True / False — To toggle the numerical visibility
+        of the values of `y`.
+
+
+    font_dict: dict — Any acceptable arguement for fonts in matplotlib
+        can be passed here. Will work only if `show_values` parameter is
+        set to True. (Font colors are not supported now.)
+    
+
+    text_offset_xy: tuple — pass the tuple with 2 values for `x` and `y`
+        respectively. Here `x` and `y` are not the actual values but the
+        values that you pass in will be added as the offset to change the
+        position of each bar's values.
+    
+    ax: plt.axes object.
+    
+    
+    Example
+    -------
+    >>> x = np.random.randint(0, 10_000, 100)      # Making some random points
+    >>> histplot(x, lw=20, spines=False, show_values=True,
+         font_dict=dict(fontfamily='product sans', fontsize=15), bins=30,
+         text_offset_xy = (50, 0.6))
+
+    --- END ---
+    """
+
     if isinstance(x, pd.DataFrame):
         print("DataFrames are not supported now. Please provide 1D object - Series/Array/List etc.")
         return
