@@ -11,6 +11,7 @@ from plot_internals import *
 importlib.reload(plot_internals)
 colors = ["#59ffc5", "#ffed4f", "#19ffaf", "#00eaff", "#ffed4f", "#f67dff", "#ff59db", "#ff59db", "#fffba6", "cyan"]
 plt.style.use('dark_background')
+neos1 = "THE DEFINITION IS STILL REQUIRED HERE."
 
 def barplot(x, y, show_values=False, spines=True, color="#59ffc5", lw=25, font_dict=dict(),
             y_offset=0, ax=None):
@@ -428,9 +429,114 @@ def lineplot(x, y= None, show_marks= True, point_marker= 'o', point_size= 2, sho
 
 from scipy.stats import gaussian_kde
 
-def kdeplot(x, covariance_factor=.5, fill_alpha=.15, fill=True, spines=True,
-             color="#59ffc5", lw=15, ax=None, legend=False, legend_label=None):
+def kdeplot(x, covariance_factor=.5, fill=True, fill_alpha=.15, spines=True,
+             color="#59ffc5", lw=15, legend=False, legend_label=None, ax=None):
     
+    """
+    NEONA
+    —————
+
+     ____________________________________
+    |This function plots a neon KDE plot.|
+     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    
+    About
+    -----
+    Who doesn't love KDE? A smooth line showing the frequency of
+    each region where your data point lies.
+
+    This function accepts a univariate variable i.e. a single feature
+    as an input and will draw the density line for that.
+
+    Good Things
+    -----------
+    You can also pass `DataFrame` there. It will plot the density line
+    for each column in a seperate color (if provided).
+
+    
+    Parameters
+    ----------
+    x: DataFrame / List / Array / Series.
+       This will be a data source for the KDE plot. As said, you can
+       pass any 1D iterable obj like array, list, tuple, series to plot
+       that single density plot or a whole DataFrame to plot all columns
+       automatically.
+
+       Of course, you can plot two neona kdeplots on top of each other
+       and tweak the settings as per your requirement. (Example below)
+
+    covariance_factor: int / float — This will control the smoothnes of the
+        density line.
+
+    fill: True / False — This will toggle the visibility of the fill 
+        area under the density line.
+
+    fill_alpha: int / float — This will control the opacity / alpha of the 
+        filled region under the density line (effctive only if the `fill`
+        id True).
+
+    spines: True / False — To toggle visibility of axes spines. As
+        neona looks better with dark black and withot any borders!
+
+    color: hex / str / 1D iterable — value to provide color(s) to
+        the lollipops. Single (color='r') or multiple (color=['r', 'purple'])
+        will work. Works even when the colors are less than the total bars.
+
+    lw: int / float — it is `linewidth` to control the intensity 
+        and thickness of the edge of each lollipop.
+
+    legend: True / False — Will show or hide legends. If the DataFrame is passed
+        then the `legend_label` parameter will be not effective. It will automatically
+        give the column names of that DataFrame in `x` to the legend. 
+
+    legend_label: str — This will be used if the legend = True and the `x` is not DataFrame.
+        The values passed in here will act asif you are passing `label` parameter in plt.plot(label="Value")
+        and then calling plt.legend()
+
+    ax: plt.axes object.
+
+    
+    Example
+    -------
+    >>> df = pd.DataFrame(np.random.normal(0, 1, (10,3))).round(2)
+    
+          0     1     2
+    0  1.08 -0.51 -0.41
+    1  0.21  0.17  1.12
+    2  0.49  1.85  0.35
+    3  1.36  1.84  2.24
+    4 -1.30  0.73  0.48
+    5  0.97  0.53  0.41
+    6 -1.13  0.50  0.41
+    7  0.26  1.67 -0.95
+    8 -0.52 -0.37  2.14
+    9  0.21 -0.52  0.05
+
+        # With single column / feature
+    >>> neona.kdeplot(df[0], color='cyan')
+
+        # With whole DataFrame and built in colors
+    >>> neona.kdeplot(df, color=neona.neos1)
+
+        # With 1D iterable and other options
+    >>> neona.kdeplot(np.random.randint(0, 1000, 100), color=neona.neos1, 
+                      legend=True, legend_label="Random Numbers", fill=True)
+
+        # 2 Plots with different settings (From "see below" tag from above)
+    >>> neona.kdeplot(df[0], color='red', fill=True, fill_alpha=0.2, legend=True, legend_label="Red Team")
+        neona.kdeplot(df[1], color='cyan', fill=True, fill_alpha=0.5, legend=True, legend_label="Cyan Team")
+
+
+    Also see
+    --------
+    neona.histplot()
+
+
+
+    --- END ---
+    """
+
+
     ax = ax or plt.gca()
     plot_configure(ax, spines_yn=spines)
     a, b = get_lw(lw=lw)
@@ -470,9 +576,116 @@ def kdeplot(x, covariance_factor=.5, fill_alpha=.15, fill=True, spines=True,
 
 # ------------------------------------ ANOTHER ------------------------------------------
 
-def scatterplot(x, y, spines=True, point_size=2,
-                color="#59ffc5", point_marker='o', font_dict=dict(),
-                show_values=None, ax=None, labels=None, legend=False, legend_label=None):
+def scatterplot(x, y, point_marker='o', point_size=2, spines=True, 
+                color="#59ffc5", font_dict=dict(), show_values=None, 
+                labels=None, legend=False, legend_label=None, ax=None):
+    
+    """
+    NEONA
+    —————
+
+     _______________________________________
+    |This function plots a neon scatter plot|
+     ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    
+    About
+    -----
+    Tell me after plotting this, did you feel yourself under a sky filled
+    with sparkling stars?
+
+    Welcome to the neona scatterplot! This plot will of course show the
+    relationship between two features, but also enables you to tweak multiple
+    parameters to get the feeling you want.
+
+    Pro tip: While using neona.scatterplot(), using 'x' as the point_marker
+        will give you amazing result and feel of the scatterplot
+
+
+
+    Good things
+    -----------
+    This function enables you to show the values of each - individual points
+    on the plot as other function in neona does (with `show_values` parameter).
+
+    But this time, scatterplot also enables you to pass the optional - other values
+    which will replace the default values with the `labels` parameter. (Example below)
+    
+
+    Parameters
+    ----------
+    x: List / Array / Series.
+        This is a data source for the X axis on the scatter plot. It should be any
+        1D iterable.
+
+
+    y: List / Array / Series.
+        This is a data source for the Y axis on the scatter plot. It should be any
+        1D iterable.
+
+
+    point_marker: Any acceptable format of markers in `plt.scatter`.
+        Such as — 'o', 'x', 's'... Default is 'o'.
+    
+
+    point_size: int / float — This will change the marker size.
+
+
+    spines: True / False — To toggle visibility of axes spines. As
+        neona looks better with dark black and withot any borders!
+
+
+    color: hex / str / 1D iterable — value to provide color(s) to the
+        lines. Single (color='r') or multiple (color=['r', 'purple'])
+        will work. 
+
+        Note that, if you are passing the `list` or any other iterable
+        for multiple values for the color, they must match up with the
+        length of total values.
+
+
+    font_dict: dict() — Any acceptable arguement for fonts in matplotlib
+        can be passed here. Will work only if `show_values` parameter is
+        set to True. (Font colors are not supported now.)
+    
+
+    show_values: True / False — To toggle the numerical visibility
+        of the values of `y`.
+
+
+    labels: list / array / series — To plot the manual list of values for
+        each scatter points (works only if `show_values` is True).
+
+        If the values are passed here (which must have the same length as
+        the total data points) will replace the values of `y` to be shown.
+
+
+    legend: True / False — Will show or hide legend. 
+
+    
+    legend_label: str — This will be used if the legend = True. The values 
+        passed in here will act asif you are passing `label` parameter in
+        plt.plot(label="Value") and then calling plt.legend()
+
+    
+    ax: plt.axes object.
+    
+    
+    Example
+    -------
+    >>> x = np.random.randint(0, 100, 100)         # Making x data
+    >>> y = 2 * x + np.random.normal(5, 10, 100)   # Making y data based on x for correlation
+    
+        # Simple scatter plot (with default parameters)
+    >>> neona.scatterplot(x, y)
+
+        # Passing Series ↓ (also series, right?)
+    >>> neona.lineplot(df[0])
+
+        # Passing both x and y
+    >>> neona.lineplot(df[0], df[1])
+
+    --- END ---
+    """
     
     fig = plt.gcf()
     ax = ax or plt.gca()
