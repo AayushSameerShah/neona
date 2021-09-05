@@ -383,8 +383,8 @@ def lineplot(x, y=None, show_marks=False, point_marker='o', point_size=2, show_v
     
     
     
-    # WHOLE DF / Series
-    if isinstance(x, (pd.Series, pd.DataFrame)) and y is None:
+    # Only X is given
+    if y is None:
         
         # DF given
         if isinstance(x, pd.DataFrame):
@@ -401,7 +401,7 @@ def lineplot(x, y=None, show_marks=False, point_marker='o', point_size=2, show_v
                 
                 if show_values: 
                     for ind, val in zip(x[col].index, x[col].values):
-                        plt.text(ind, val, str(val), **font_dict)    
+                        plt.text(ind, val, str(round(val, precision)), **font_dict)    
                         
                 if show_marks:
                     for ind, val in zip(x[col].index, x[col].values):
@@ -442,7 +442,7 @@ def lineplot(x, y=None, show_marks=False, point_marker='o', point_size=2, show_v
         
         if show_values:
             for valx, valy in zip(x, y):
-                plt.text(valx, valy, str(round(valy, precision), **font_dict))
+                plt.text(valx, valy, str(round(valy, precision)), **font_dict)
             
         if show_marks:
             for ind, val in zip(x, y):
