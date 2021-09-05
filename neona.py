@@ -442,7 +442,7 @@ def lineplot(x, y=None, show_marks=False, point_marker='o', point_size=2, show_v
         
         if show_values:
             for valx, valy in zip(x, y):
-                plt.text(valx, valy, str(round(valy, precision), **font_dict)   
+                plt.text(valx, valy, str(round(valy, precision), **font_dict))
             
         if show_marks:
             for ind, val in zip(x, y):
