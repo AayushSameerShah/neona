@@ -113,7 +113,7 @@ def barplot(x, y, show_values=False, spines=True, color="#59ffc5", lw=25, font_d
 # -------------------------------------- ANOTHER -------------------------------------------
 
 
-def lollipoplot(x, y, show_values=True, point_marker='o', point_size=2, 
+def lollipoplot(x, y, show_values=False, precision=2, point_marker='o', point_size=2, 
                 color="#59ffc5", spines=True, font_dict=dict(), ax=None, lw=15):
 
     """
@@ -142,33 +142,46 @@ def lollipoplot(x, y, show_values=True, point_marker='o', point_size=2,
     x: Any 1D iterable — A base on which the bars will be plotted.
        It will be your x-axis.
 
+
     y: Any 1D iterable — The `height` of all individual lollipop. It 
         must be numerical.
 
+
     show_values: True / False — To toggle the numerical visibility
         of the values of `y`.
+
+
+    precision: int — Controls how many precision you want to show
+        if the `show_values` is True.
+
 
     point_marker: Any acceptable format of markers in `plt.scatter`.
         Such as — 'o', 'x', 's'... Default is 'o'. This will change
         the look of the lollipop head.
 
+
     point_size: int / float — This will change the head size of the
         lollipop. 
 
+
     spines: True / False — To toggle visibility of axes spines. As
         neona looks better with dark black and withot any borders!
+
 
     color: hex / str / 1D iterable — value to provide color(s) to
         the lollipops. Single (color='r') or multiple (color=['r', 'purple'])
         will work. Works even when the colors are less than the total bars.
 
+
     lw: int / float — it is `linewidth` to control the intensity 
         and thickness of the edge of each lollipop.
+
 
     font_dict: dict() — Any acceptable arguement for fonts in 
         matplotlib can be passed here. (Font colors are not
         supported now.)
        
+
     ax: plt.axes object.
     
     
@@ -227,14 +240,14 @@ def lollipoplot(x, y, show_values=True, point_marker='o', point_size=2,
         for xi, yi in zip(x, y):
             colr = next(colors)
             font_dict['color'] = colr
-            ax.text(xi, yi, str(yi), **font_dict)
+            ax.text(xi, yi, str(round(yi, precision)), **font_dict)
             
     return ax
 
 # ----------------------------------------------- ANOTHER ------------------------------------------------------
 
-def lineplot(x, y= None, show_marks= True, point_marker= 'o', point_size= 2, show_values= True,
-            color= "#59ffc5", lw=15, spines= True, font_dict= dict(), ax=None, 
+def lineplot(x, y=None, show_marks=False, point_marker='o', point_size=2, show_values=False,
+            precision=2, color="#59ffc5", lw=15, spines=True, font_dict=dict(), ax=None, 
             legend=False, legend_label=None):
     
     """
@@ -285,41 +298,56 @@ def lineplot(x, y= None, show_marks= True, point_marker= 'o', point_size= 2, sho
     y: [optional] Any 1D iterable — The `height` of all individual lollipop. It 
         must be numerical.
 
+
     show_marks: True / False — This will toggle the point intersection marks'
         visibility.
-    
+
+
     point_marker: Any acceptable format of markers in `plt.plot`.
         Such as — 'o', 'x', 's'... Default is 'o'. This will change
         the look of the points' intersection head. (only if show_marks= True)
-    
+
+
     point_size: int / float — This will change the head size of the
         points' intersection. (only if show_marks= True)
 
+
     show_values: True / False — To toggle the numerical visibility
         of the values of `y`.
+
+    
+    precision: int — Controls how many precision you want to show
+        if the `show_values` is True.
+
 
     color: hex / str / 1D iterable — value to provide color(s) to the
         lines. Single (color='r') or multiple (color=['r', 'purple'])
         will work. Multiple colors will only makes sense if you are passing
         DataFrame as `x`. Only first color in that list will be used.
 
+
     lw: int / float — it is `linewidth` to control the intensity 
         and thickness of the edge of each lollipop.
-        
+
+
     spines: True / False — To toggle visibility of axes spines. As
         neona looks better with dark black and withot any borders!
+
 
     font_dict: dict() — Any acceptable arguement for fonts in 
         matplotlib can be passed here. (Font colors are not
         supported now.)
-    
+
+
     legend: True / False — Will show or hide legends. If the DataFrame is passed
         then the `legend_label` parameter will be not effective. It will automatically
         give the column names of that DataFrame in `x` to the legend. 
 
+
     legend_label: str — This will be used if the legend = True and the `x` is not DataFrame.
         The values passed in here will act asif you are passing `label` parameter in plt.plot(label="Value")
         and then calling plt.legend()
+
 
     ax: plt.axes object.
     
@@ -393,7 +421,7 @@ def lineplot(x, y= None, show_marks= True, point_marker= 'o', point_size= 2, sho
                 if isinstance(x, pd.Series): inds = x.index
                 else: inds = list(range(len(x)))
                 for ind, val in zip(inds, x):
-                        plt.text(ind, val, str(val), **font_dict)    
+                        plt.text(ind, val, str(round(val, precision)), **font_dict)    
             
             if show_marks:
                 if isinstance(x, pd.Series): inds = x.index
@@ -414,7 +442,7 @@ def lineplot(x, y= None, show_marks= True, point_marker= 'o', point_size= 2, sho
         
         if show_values:
             for valx, valy in zip(x, y):
-                plt.text(valx, valy, str(valy), **font_dict)   
+                plt.text(valx, valy, str(round(valy, precision), **font_dict)   
             
         if show_marks:
             for ind, val in zip(x, y):
@@ -465,33 +493,42 @@ def kdeplot(x, covariance_factor=.5, fill=True, fill_alpha=.15, spines=True,
        Of course, you can plot two neona kdeplots on top of each other
        and tweak the settings as per your requirement. (Example below)
 
+
     covariance_factor: int / float — This will control the smoothnes of the
         density line.
 
+
     fill: True / False — This will toggle the visibility of the fill 
         area under the density line.
+
 
     fill_alpha: int / float — This will control the opacity / alpha of the 
         filled region under the density line (effctive only if the `fill`
         id True).
 
+
     spines: True / False — To toggle visibility of axes spines. As
         neona looks better with dark black and withot any borders!
+
 
     color: hex / str / 1D iterable — value to provide color(s) to
         the lollipops. Single (color='r') or multiple (color=['r', 'purple'])
         will work. Works even when the colors are less than the total bars.
 
+
     lw: int / float — it is `linewidth` to control the intensity 
         and thickness of the edge of each lollipop.
+
 
     legend: True / False — Will show or hide legends. If the DataFrame is passed
         then the `legend_label` parameter will be not effective. It will automatically
         give the column names of that DataFrame in `x` to the legend. 
 
+
     legend_label: str — This will be used if the legend = True and the `x` is not DataFrame.
         The values passed in here will act asif you are passing `label` parameter in plt.plot(label="Value")
         and then calling plt.legend()
+
 
     ax: plt.axes object.
 
